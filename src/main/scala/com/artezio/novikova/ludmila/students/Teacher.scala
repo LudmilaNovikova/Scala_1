@@ -3,14 +3,12 @@ package com.artezio.novikova.ludmila.students
 /**
  * Created by dvlar on 01.11.2015.
  */
-class Teacher(name: String, age: Byte, var academicDegree: String) extends Person(name, age) with ScienceWork{
+class Teacher(name: String, age: Integer, var academicDegree: String) extends Person(name, age) with ScienceWork{
   override def toString = super.toString + s", $academicDegree"
 
-  def teach(condition: Condition): String = condition match {
-    case Philosophy => "Today we will teach philosophy"
-    case Physics => if (academicDegree.contains(Physics.condition))
-      "I will teach physics"
-      else "I don't have enough knowledge to teach physics"
+  def teach(condition: Condition): String = condition.condition match {
+    case "good" => "I will teach"
+    case _ => "I won't teach"
   }
 
   def setAcademicDegree(newDegree: String): String ={
@@ -19,4 +17,14 @@ class Teacher(name: String, age: Byte, var academicDegree: String) extends Perso
   }
 
   override def getInfo: String = toString
+
 }
+
+object Teacher {
+  implicit def stringToTeacher(str: String): Teacher = {
+    var fields = str.split(",").map(_.trim)
+    new Teacher(fields(0), fields(1).toInt, fields(2))
+  }
+}
+
+
